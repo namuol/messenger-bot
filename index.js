@@ -84,7 +84,9 @@ class Bot extends EventEmitter {
           }
         }
 
-        let parsed = JSON.parse(body)
+        let parsed = JSON.parse(body.replace(/("sender"\s*:\s*{\s*"id"\s*:\s*)(\d+)/g, (_, rest, id) => (
+          rest + '"' + id + '"'
+        )))
         this._handleMessage(parsed)
 
         res.end(JSON.stringify({status: 'ok'}))
